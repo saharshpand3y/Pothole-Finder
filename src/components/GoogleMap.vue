@@ -67,7 +67,6 @@ export default {
           ],
         });
 
-
         this.addMarkers();
 
         this.addSearchBox(google);
@@ -82,8 +81,11 @@ export default {
       this.markers.forEach((marker) => marker.setMap(null));
       this.markers = [];
       this.potholes.forEach((pothole) => {
+        const [lat, lng] = pothole.coordinate
+          .split(",")
+          .map((coord) => parseFloat(coord));
         const marker = new google.maps.Marker({
-          position: this.center,
+          position: { lat, lng }, // Use the pothole's specific coordinates
           map: this.map,
           title: `Pothole ${pothole.id}`,
           icon: {

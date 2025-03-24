@@ -24,19 +24,19 @@ export default {
       potholes: [
         {
           id: "A",
-          coordinate: "123,23",
+          coordinate: "20.360236,85.8269268", // Nandankanan Road
           severity: "LOW",
           location: "Near Flamingo",
         },
         {
           id: "B",
-          coordinate: "123,23",
-          severity: "LOW",
+          coordinate: "20.358125,85.833215", // Different location on Nandankanan Rd
+          severity: "HIGH",
           location: "Nandankanan Rd",
         },
         {
           id: "C",
-          coordinate: "123,23",
+          coordinate: "20.355896,85.830469", // Red Town area
           severity: "MEDIUM",
           location: "Red Town",
         },
