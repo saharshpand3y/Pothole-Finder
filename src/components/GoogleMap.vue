@@ -6,7 +6,6 @@
 
 <script>
 import { Loader } from "@googlemaps/js-api-loader";
-
 export default {
   name: "GoogleMap",
   props: {
@@ -39,6 +38,7 @@ export default {
     async initializeMap() {
       try {
         const loader = new Loader({
+          // apiKey: import.meta.env.VUE_APP_GOOGLE_MAPS_API_KEY || process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
           apiKey: "AIzaSyDkJ_56WwyYTu-F-WxBHeyq6PHzi2bSzjE",
           version: "weekly",
           libraries: ["places"],
