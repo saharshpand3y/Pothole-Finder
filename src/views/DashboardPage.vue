@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <div class="table-container">
-      <PotholeTable :potholes="potholes" />
+      <PotholeTable :potholes="potholes" @pothole-deleted="fetchPotholes" />
     </div>
     <div class="map-container">
       <GoogleMap :potholes="potholes" />

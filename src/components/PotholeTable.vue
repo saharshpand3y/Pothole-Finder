@@ -6,6 +6,7 @@
         <th>Coordinates</th>
         <th>Severity</th>
         <th>Location</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -14,15 +15,26 @@
         <td>{{ formatCoordinates(pothole.latitude, pothole.longitude) }}</td>
         <td class="severity" :class="pothole.severity">{{ pothole.severity }}</td>
         <td>{{ pothole.place }}</td>
+        <td>
+          <button 
+            class="delete-btn" 
+            @click="deletePothole(pothole._id)"
+            :disabled="isDeleting === pothole._id"
+          >
+            {{ isDeleting === pothole._id ? 'Deleting...' : 'Delete' }}
+          </button>
+        </td>
       </tr>
       <tr v-if="potholes.length === 0">
-        <td colspan="4" class="no-data">No potholes found</td>
+        <td colspan="5" class="no-data">No potholes found</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "PotholeTable",
   props: {
@@ -31,9 +43,26 @@ export default {
       default: () => [],
     },
   },
+  data() {
+    return {
+      isDeleting: null,
+    };
+  },
   methods: {
     formatCoordinates(lat, lng) {
       return `${parseFloat(lat).toFixed(6)}, ${parseFloat(lng).toFixed(6)}`;
+    },
+    async deletePothole(id) {
+      try {
+        this.isDeleting = id;
+        await axios.delete(`http://localhost:3000/api/potholes/${id}`);
+        this.$emit('pothole-deleted');
+      } catch (error) {
+        console.error('Error deleting pothole:', error);
+        alert('Failed to delete pothole');
+      } finally {
+        this.isDeleting = null;
+      }
     },
   },
 };
@@ -77,5 +106,23 @@ th {
   text-align: center;
   color: #666;
   font-style: italic;
+}
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.delete-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 </style>
