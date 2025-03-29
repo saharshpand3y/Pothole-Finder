@@ -19,7 +19,7 @@ export default {
     return {
       map: null,
       markers: [],
-      center: { lat: 20.360236, lng: 85.8269268 },
+      center: { lat: 20.2960, lng: 85.8246 },
     };
   },
   watch: {
@@ -48,7 +48,7 @@ export default {
 
         this.map = new google.maps.Map(this.$refs.mapRef, {
           center: this.center,
-          zoom: 15,
+          zoom: 12,
           styles: [
             {
               featureType: "poi",
