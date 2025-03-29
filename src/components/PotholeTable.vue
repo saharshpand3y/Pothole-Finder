@@ -2,18 +2,21 @@
   <table class="pothole-table">
     <thead>
       <tr>
-        <th>Pothole</th>
-        <th>Coordinate</th>
+        <th>Pothole ID</th>
+        <th>Coordinates</th>
         <th>Severity</th>
         <th>Location</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="pothole in potholes" :key="pothole.id">
-        <td>{{ pothole.id }}</td>
-        <td>{{ pothole.coordinate }}</td>
-        <td>{{ pothole.severity }}</td>
-        <td>{{ pothole.location }}</td>
+      <tr v-for="pothole in potholes" :key="pothole._id">
+        <td>{{ pothole.pothole_id }}</td>
+        <td>{{ formatCoordinates(pothole.latitude, pothole.longitude) }}</td>
+        <td class="severity" :class="pothole.severity">{{ pothole.severity }}</td>
+        <td>{{ pothole.place }}</td>
+      </tr>
+      <tr v-if="potholes.length === 0">
+        <td colspan="4" class="no-data">No potholes found</td>
       </tr>
     </tbody>
   </table>
@@ -22,29 +25,16 @@
 <script>
 export default {
   name: "PotholeTable",
-  data() {
-    return {
-      potholes: [
-        {
-          id: "A",
-          coordinate: "20.360236,85.8269268", // Nandankanan Road
-          severity: "LOW",
-          location: "Near Flamingo",
-        },
-        {
-          id: "B",
-          coordinate: "20.358125,85.833215", // Different location on Nandankanan Rd
-          severity: "HIGH",
-          location: "Nandankanan Rd",
-        },
-        {
-          id: "C",
-          coordinate: "20.355896,85.830469", // Red Town area
-          severity: "MEDIUM",
-          location: "Red Town",
-        },
-      ],
-    };
+  props: {
+    potholes: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  methods: {
+    formatCoordinates(lat, lng) {
+      return `${parseFloat(lat).toFixed(6)}, ${parseFloat(lng).toFixed(6)}`;
+    },
   },
 };
 </script>
@@ -56,8 +46,7 @@ export default {
   background: white;
 }
 
-th,
-td {
+th, td {
   padding: 12px;
   text-align: left;
   border: 1px solid #ddd;
@@ -66,5 +55,27 @@ td {
 th {
   background-color: #333;
   color: white;
+}
+
+.severity {
+  text-transform: uppercase;
+}
+
+.severity.high {
+  color: #dc3545;
+}
+
+.severity.medium {
+  color: #ffc107;
+}
+
+.severity.low {
+  color: #28a745;
+}
+
+.no-data {
+  text-align: center;
+  color: #666;
+  font-style: italic;
 }
 </style>

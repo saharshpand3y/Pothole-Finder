@@ -12,36 +12,37 @@
 <script>
 import PotholeTable from "../components/PotholeTable.vue";
 import GoogleMap from "../components/GoogleMap.vue";
+import axios from "axios";
 
 export default {
-  name: "DashboardPage",
   components: {
     PotholeTable,
     GoogleMap,
   },
   data() {
     return {
-      potholes: [
-        {
-          id: "A",
-          coordinate: "20.360236,85.8269268", // Nandankanan Road
-          severity: "LOW",
-          location: "Near Flamingo",
-        },
-        {
-          id: "B",
-          coordinate: "20.358125,85.833215", // Different location on Nandankanan Rd
-          severity: "HIGH",
-          location: "Nandankanan Rd",
-        },
-        {
-          id: "C",
-          coordinate: "20.355896,85.830469", // Red Town area
-          severity: "MEDIUM",
-          location: "Red Town",
-        },
-      ],
+      potholes: [],
+      intervalId: null,
     };
+  },
+  mounted() {
+    this.fetchPotholes();
+    this.intervalId = setInterval(this.fetchPotholes, 1000);
+  },
+  beforeUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  },
+  methods: {
+    async fetchPotholes() {
+      try {
+        const response = await axios.get("http://localhost:3000/api/potholes");
+        this.potholes = response.data;
+      } catch (error) {
+        console.error("Error fetching potholes:", error);
+      }
+    },
   },
 };
 </script>

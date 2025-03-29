@@ -12,26 +12,7 @@ export default {
   props: {
     potholes: {
       type: Array,
-      default: () => [
-        {
-          id: "A",
-          coordinate: "123,23",
-          severity: "LOW",
-          location: "Near Flamingo",
-        },
-        {
-          id: "B",
-          coordinate: "123,23",
-          severity: "LOW",
-          location: "Nandankanan Rd",
-        },
-        {
-          id: "C",
-          coordinate: "123,23",
-          severity: "MEDIUM",
-          location: "Red Town",
-        },
-      ],
+      default: () => [],
     },
   },
   data() {
@@ -40,6 +21,16 @@ export default {
       markers: [],
       center: { lat: 20.360236, lng: 85.8269268 },
     };
+  },
+  watch: {
+    potholes: {
+      handler() {
+        if (this.map) {
+          this.addMarkers();
+        }
+      },
+      deep: true,
+    },
   },
   mounted() {
     this.initializeMap();
@@ -68,7 +59,6 @@ export default {
         });
 
         this.addMarkers();
-
         this.addSearchBox(google);
       } catch (error) {
         console.error("Error loading Google Maps:", error);
@@ -77,17 +67,17 @@ export default {
 
     addMarkers() {
       const google = window.google;
-
       this.markers.forEach((marker) => marker.setMap(null));
       this.markers = [];
+
       this.potholes.forEach((pothole) => {
-        const [lat, lng] = pothole.coordinate
-          .split(",")
-          .map((coord) => parseFloat(coord));
         const marker = new google.maps.Marker({
-          position: { lat, lng }, // Use the pothole's specific coordinates
+          position: {
+            lat: parseFloat(pothole.latitude),
+            lng: parseFloat(pothole.longitude),
+          },
           map: this.map,
-          title: `Pothole ${pothole.id}`,
+          title: `Pothole ${pothole.pothole_id}`,
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 8,
@@ -100,12 +90,13 @@ export default {
 
         const infoWindow = new google.maps.InfoWindow({
           content: `
-            <div class="info-window">
-              <h3>Pothole ${pothole.id}</h3>
-              <p>Location: ${pothole.location}</p>
-              <p>Severity: ${pothole.severity}</p>
-            </div>
-          `,
+        <div class="info-window">
+          <h3>Pothole ${pothole.pothole_id}</h3>
+          <p>Location: ${pothole.place}</p>
+          <p>Severity: ${pothole.severity.toUpperCase()}</p>
+          <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
+        </div>
+      `,
         });
 
         marker.addListener("click", () => {
@@ -116,42 +107,13 @@ export default {
       });
     },
 
-    addSearchBox(google) {
-      const input = document.createElement("input");
-      input.className = "map-search-box";
-      input.placeholder = "Search location...";
-
-      this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-      const searchBox = new google.maps.places.SearchBox(input);
-
-      searchBox.addListener("places_changed", () => {
-        const places = searchBox.getPlaces();
-
-        if (places.length === 0) return;
-
-        const bounds = new google.maps.LatLngBounds();
-        places.forEach((place) => {
-          if (!place.geometry || !place.geometry.location) return;
-
-          if (place.geometry.viewport) {
-            bounds.union(place.geometry.viewport);
-          } else {
-            bounds.extend(place.geometry.location);
-          }
-        });
-
-        this.map.fitBounds(bounds);
-      });
-    },
-
     getSeverityColor(severity) {
       const colors = {
-        LOW: "#FFC107",
-        MEDIUM: "#FF9800",
-        HIGH: "#F44336",
+        low: "#28a745",
+        medium: "#ffc107",
+        high: "#dc3545",
       };
-      return colors[severity] || "#FFC107";
+      return colors[severity.toLowerCase()] || "#ffc107";
     },
   },
 };
