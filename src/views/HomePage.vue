@@ -53,6 +53,7 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Boldonse&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+AU+SA:wght@100..400&family=Playwrite+VN:wght@100..400&family=Sacramento&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+AU+SA:wght@100..400&family=Playwrite+VN:wght@100..400&family=Sacramento&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
 
@@ -63,6 +64,7 @@ export default {
   justify-content: center;
   color: white;
   position: relative;
+  font-family: "Roboto", sans-serif;
 }
 
 .blur-overlay {
@@ -86,9 +88,9 @@ h1 {
   font-size: 5rem;
   margin-bottom: 4rem;
   min-height: 6rem;
-  font-family: "Winky Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
   font-optical-sizing: auto;
-  font-weight: 400;
   font-style: normal;
   color: white;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
@@ -124,10 +126,8 @@ button {
   cursor: pointer;
   transition: background-color 0.5s ease;
   border-radius: 5px;
-  font-family: "Winky Sans", sans-serif;
-  font-optical-sizing: auto;
+  font-family: "Roboto", sans-serif;
   font-weight: 400;
-  font-style: normal;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
