@@ -18,7 +18,7 @@ export default {
     return {
       map: null,
       markers: [],
-      center: { lat: 20.2960, lng: 85.8246 },
+      center: { lat: 20.296, lng: 85.8246 },
     };
   },
   watch: {
@@ -38,8 +38,9 @@ export default {
     async initializeMap() {
       try {
         const loader = new Loader({
-          // apiKey: import.meta.env.VUE_APP_GOOGLE_MAPS_API_KEY || process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
-          apiKey: "AIzaSyDkJ_56WwyYTu-F-WxBHeyq6PHzi2bSzjE",
+          apiKey:
+            import.meta.env.VITE_GOOGLE_MAPS_API_KEY ||
+            process.env.VITE_GOOGLE_MAPS_API_KEY,
           version: "weekly",
           libraries: ["places"],
         });
@@ -95,6 +96,7 @@ export default {
           <p>Location: ${pothole.place}</p>
           <p>Severity: ${pothole.severity.toUpperCase()}</p>
           <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
+          <img src="https://picsum.photos/320/200">
         </div>
       `,
         });
@@ -155,5 +157,10 @@ export default {
 :deep(.info-window p) {
   margin: 2px 0;
   color: #666;
+}
+:deep(.info-window img) {
+  margin-top: 10px;
+  color: #666;
+  border-radius: 10px;
 }
 </style>
