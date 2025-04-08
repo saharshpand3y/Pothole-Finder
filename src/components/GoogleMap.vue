@@ -71,8 +71,6 @@ export default {
     addMarkers() {
       const google = window.google;
       const currentPotholeIds = new Set(this.potholes.map((p) => p._id));
-
-      // Remove markers that no longer exist
       for (const [id, marker] of this.markers) {
         if (!currentPotholeIds.has(id)) {
           marker.setMap(null);
@@ -111,7 +109,6 @@ export default {
         `,
           });
 
-          // Add closeclick event listener
           infoWindow.addListener("closeclick", () => {
             this.activeInfoWindow = null;
             this.openInfoWindowId = null;
@@ -129,7 +126,6 @@ export default {
           this.markers.set(pothole._id, marker);
         }
 
-        // Only reopen if it was actively opened by user
         if (this.openInfoWindowId === pothole._id && this.activeInfoWindow) {
           this.activeInfoWindow.open(this.map, this.markers.get(pothole._id));
         }
