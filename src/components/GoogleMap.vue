@@ -159,7 +159,7 @@ export default {
   color: #666;
 }
 :deep(.info-window img) {
-  /* margin-top: 10px; */
+  display: block;
   margin: 10px auto 0 auto;
   color: #666;
   border-radius: 10px;
