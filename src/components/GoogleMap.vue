@@ -71,32 +71,22 @@ export default {
     addMarkers() {
       const google = window.google;
       const currentPotholeIds = new Set(this.potholes.map((p) => p._id));
+
+      // Remove markers that no longer exist
       for (const [id, marker] of this.markers) {
         if (!currentPotholeIds.has(id)) {
           marker.setMap(null);
           this.markers.delete(id);
         }
       }
-      this.potholes.forEach((pothole) => {
-        const position = {
-          lat: parseFloat(pothole.latitude),
-          lng: parseFloat(pothole.longitude),
-        };
 
-        if (this.markers.has(pothole._id)) {
-          const marker = this.markers.get(pothole._id);
-          marker.setPosition(position);
-          marker.setIcon({
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 8,
-            fillColor: this.getSeverityColor(pothole.severity),
-            fillOpacity: 0.8,
-            strokeWeight: 1,
-            strokeColor: "#ffffff",
-          });
-        } else {
+      this.potholes.forEach((pothole) => {
+        if (!this.markers.has(pothole._id)) {
           const marker = new google.maps.Marker({
-            position,
+            position: {
+              lat: parseFloat(pothole.latitude),
+              lng: parseFloat(pothole.longitude),
+            },
             map: this.map,
             title: `Pothole ${pothole.pothole_id}`,
             icon: {
@@ -111,14 +101,20 @@ export default {
 
           const infoWindow = new google.maps.InfoWindow({
             content: `
-              <div class="info-window">
-                <h3>Pothole ${pothole.pothole_id}</h3>
-                <p>Location: ${pothole.place}</p>
-                <p>Severity: ${pothole.severity.toUpperCase()}</p>
-                <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
-                <img src=${pothole.image_url}>
-              </div>
-            `,
+          <div class="info-window">
+            <h3>Pothole ${pothole.pothole_id}</h3>
+            <p>Location: ${pothole.place}</p>
+            <p>Severity: ${pothole.severity.toUpperCase()}</p>
+            <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
+            <img src=${pothole.image_url}>
+          </div>
+        `,
+          });
+
+          // Add closeclick event listener
+          infoWindow.addListener("closeclick", () => {
+            this.activeInfoWindow = null;
+            this.openInfoWindowId = null;
           });
 
           marker.addListener("click", () => {
@@ -132,6 +128,8 @@ export default {
 
           this.markers.set(pothole._id, marker);
         }
+
+        // Only reopen if it was actively opened by user
         if (this.openInfoWindowId === pothole._id && this.activeInfoWindow) {
           this.activeInfoWindow.open(this.map, this.markers.get(pothole._id));
         }
