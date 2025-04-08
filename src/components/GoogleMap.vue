@@ -96,7 +96,7 @@ export default {
           <p>Location: ${pothole.place}</p>
           <p>Severity: ${pothole.severity.toUpperCase()}</p>
           <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
-          <img src=${pothole.image_url} width=320px height=200px>
+          <img src=${pothole.image_url}>
         </div>
       `,
         });
@@ -162,5 +162,7 @@ export default {
   margin-top: 10px;
   color: #666;
   border-radius: 10px;
+  max-width: 320px;
+  max-height: 200px;
 }
 </style>
