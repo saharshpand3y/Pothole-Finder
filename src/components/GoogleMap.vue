@@ -96,7 +96,7 @@ export default {
           <p>Location: ${pothole.place}</p>
           <p>Severity: ${pothole.severity.toUpperCase()}</p>
           <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
-          <img src="https://picsum.photos/320/200">
+          <img src=${pothole.image_url} width=320px height=200px>
         </div>
       `,
         });
