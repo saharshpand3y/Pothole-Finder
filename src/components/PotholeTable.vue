@@ -13,15 +13,17 @@
       <tr v-for="pothole in potholes" :key="pothole._id">
         <td>{{ pothole.pothole_id }}</td>
         <td>{{ formatCoordinates(pothole.latitude, pothole.longitude) }}</td>
-        <td class="severity" :class="pothole.severity">{{ pothole.severity }}</td>
+        <td class="severity" :class="pothole.severity">
+          {{ pothole.severity }}
+        </td>
         <td>{{ pothole.place }}</td>
         <td>
-          <button 
-            class="delete-btn" 
+          <button
+            class="delete-btn"
             @click="deletePothole(pothole._id)"
             :disabled="isDeleting === pothole._id"
           >
-            {{ isDeleting === pothole._id ? 'Deleting...' : 'Delete' }}
+            {{ isDeleting === pothole._id ? "Deleting..." : "Delete" }}
           </button>
         </td>
       </tr>
@@ -33,7 +35,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "PotholeTable",
@@ -55,11 +57,11 @@ export default {
     async deletePothole(id) {
       try {
         this.isDeleting = id;
-        await axios.delete(`http://localhost:3000/api/potholes/${id}`);
-        this.$emit('pothole-deleted');
+        await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/potholes/${id}`);
+        this.$emit("pothole-deleted");
       } catch (error) {
-        console.error('Error deleting pothole:', error);
-        alert('Failed to delete pothole');
+        console.error("Error deleting pothole:", error);
+        alert("Failed to delete pothole");
       } finally {
         this.isDeleting = null;
       }
@@ -75,7 +77,8 @@ export default {
   background: white;
 }
 
-th, td {
+th,
+td {
   padding: 12px;
   text-align: left;
   border: 1px solid #ddd;

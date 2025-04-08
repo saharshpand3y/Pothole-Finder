@@ -37,7 +37,9 @@ export default {
   methods: {
     async fetchPotholes() {
       try {
-        const response = await axios.get("http://localhost:3000/api/potholes");
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/potholes`
+        );
         this.potholes = response.data;
       } catch (error) {
         console.error("Error fetching potholes:", error);
