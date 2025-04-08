@@ -17,8 +17,10 @@ export default {
   data() {
     return {
       map: null,
-      markers: [],
+      markers: new Map(),
       center: { lat: 20.296, lng: 85.8246 },
+      openInfoWindowId: null,
+      activeInfoWindow: null,
     };
   },
   watch: {
@@ -68,44 +70,71 @@ export default {
 
     addMarkers() {
       const google = window.google;
-      this.markers.forEach((marker) => marker.setMap(null));
-      this.markers = [];
-
+      const currentPotholeIds = new Set(this.potholes.map((p) => p._id));
+      for (const [id, marker] of this.markers) {
+        if (!currentPotholeIds.has(id)) {
+          marker.setMap(null);
+          this.markers.delete(id);
+        }
+      }
       this.potholes.forEach((pothole) => {
-        const marker = new google.maps.Marker({
-          position: {
-            lat: parseFloat(pothole.latitude),
-            lng: parseFloat(pothole.longitude),
-          },
-          map: this.map,
-          title: `Pothole ${pothole.pothole_id}`,
-          icon: {
+        const position = {
+          lat: parseFloat(pothole.latitude),
+          lng: parseFloat(pothole.longitude),
+        };
+
+        if (this.markers.has(pothole._id)) {
+          const marker = this.markers.get(pothole._id);
+          marker.setPosition(position);
+          marker.setIcon({
             path: google.maps.SymbolPath.CIRCLE,
             scale: 8,
             fillColor: this.getSeverityColor(pothole.severity),
             fillOpacity: 0.8,
             strokeWeight: 1,
             strokeColor: "#ffffff",
-          },
-        });
+          });
+        } else {
+          const marker = new google.maps.Marker({
+            position,
+            map: this.map,
+            title: `Pothole ${pothole.pothole_id}`,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              fillColor: this.getSeverityColor(pothole.severity),
+              fillOpacity: 0.8,
+              strokeWeight: 1,
+              strokeColor: "#ffffff",
+            },
+          });
 
-        const infoWindow = new google.maps.InfoWindow({
-          content: `
-        <div class="info-window">
-          <h3>Pothole ${pothole.pothole_id}</h3>
-          <p>Location: ${pothole.place}</p>
-          <p>Severity: ${pothole.severity.toUpperCase()}</p>
-          <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
-          <img src=${pothole.image_url}>
-        </div>
-      `,
-        });
+          const infoWindow = new google.maps.InfoWindow({
+            content: `
+              <div class="info-window">
+                <h3>Pothole ${pothole.pothole_id}</h3>
+                <p>Location: ${pothole.place}</p>
+                <p>Severity: ${pothole.severity.toUpperCase()}</p>
+                <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
+                <img src=${pothole.image_url}>
+              </div>
+            `,
+          });
 
-        marker.addListener("click", () => {
-          infoWindow.open(this.map, marker);
-        });
+          marker.addListener("click", () => {
+            if (this.activeInfoWindow) {
+              this.activeInfoWindow.close();
+            }
+            infoWindow.open(this.map, marker);
+            this.activeInfoWindow = infoWindow;
+            this.openInfoWindowId = pothole._id;
+          });
 
-        this.markers.push(marker);
+          this.markers.set(pothole._id, marker);
+        }
+        if (this.openInfoWindowId === pothole._id && this.activeInfoWindow) {
+          this.activeInfoWindow.open(this.map, this.markers.get(pothole._id));
+        }
       });
     },
 
