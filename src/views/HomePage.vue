@@ -21,7 +21,7 @@ export default {
   computed: {
     backgroundStyle() {
       return {
-        backgroundImage: "url(https://i.ibb.co/sdT5zfWy/background.jpg)",
+        backgroundImage: `url(${import.meta.env.VITE_BACKGROUND})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
