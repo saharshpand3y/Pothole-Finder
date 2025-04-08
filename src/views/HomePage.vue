@@ -21,7 +21,7 @@ export default {
   computed: {
     backgroundStyle() {
       return {
-        backgroundImage: "url(src/assets/background.jpeg)",
+        backgroundImage: "url(https://i.ibb.co/sdT5zfWy/background.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
@@ -54,7 +54,7 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Boldonse&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+AU+SA:wght@100..400&family=Playwrite+VN:wght@100..400&family=Sacramento&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+AU+SA:wght@100..400&family=Playwrite+VN:wght@100..400&family=Sacramento&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Boldonse&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+AU+SA:wght@100..400&family=Playwrite+VN:wght@100..400&family=Sacramento&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap");
 
 .home {
   height: 100vh;
@@ -71,7 +71,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  backdrop-filter: blur(4px); 
+  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.2);
 }
