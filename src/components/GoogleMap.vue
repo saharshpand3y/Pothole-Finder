@@ -95,13 +95,17 @@ export default {
           <p>Location: ${pothole.place}</p>
           <p>Severity: ${pothole.severity.toUpperCase()}</p>
           <p>Coordinates: ${pothole.latitude}, ${pothole.longitude}</p>
-          <img src="${pothole.image_url}" alt="Pothole Image" style="width: 70%; height: auto; margin-top: 10px; border-radius: 8px;" />
+          <img src="${pothole.image_url}" alt="Pothole Image" style="width: 100%; height: auto; margin-top: 10px; border-radius: 8px;" />
         </div>
       `,
         });
 
-        marker.addListener("click", () => {
+        marker.addListener("mouseover", () => {
           infoWindow.open(this.map, marker);
+        });
+
+        marker.addListener("mouseout", () => {
+          infoWindow.close();
         });
 
         this.markers.push(marker);
